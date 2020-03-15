@@ -2,14 +2,19 @@ package logger
 
 import (
 	"fmt"
+	"geeksaga.com/os/straw/internal"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
 )
 
 type LogConfig struct {
-	Level log.Level
-	File  string
+	Level               log.Level
+	File                string
+	Target              string
+	RotationInterval    internal.Duration
+	RotationMaxSize     internal.Size
+	RotationMaxArchives int
 }
 
 func InitializeLogging(config LogConfig) {
