@@ -461,6 +461,6 @@ func panicRecover(input *models.RunningInput) {
 		//	input.LogName(), err, trace)
 		log.Println("E! PLEASE REPORT THIS PANIC ON GITHUB with " +
 			"stack trace, configuration, and OS information: " +
-			"https://github.com/influxdata/telegraf/issues/new/choose")
+			"https://github.com/geekflow/straw/issues/new/choose")
 	}
 }
