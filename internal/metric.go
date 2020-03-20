@@ -39,6 +39,12 @@ type Metric interface {
 	AddPrefix(prefix string)
 	AddSuffix(suffix string)
 
+	// Tag functions
+	GetTag(key string) (string, bool)
+	HasTag(key string) bool
+	AddTag(key, value string)
+	RemoveTag(key string)
+
 	// Copy returns a deep copy of the Metric.
 	Copy() Metric
 

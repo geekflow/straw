@@ -135,6 +135,55 @@ func (m *metric) AddSuffix(suffix string) {
 	m.name = m.name + suffix
 }
 
+func (m *metric) AddTag(key, value string) {
+	for i, tag := range m.tags {
+		if key > tag.Key {
+			continue
+		}
+
+		if key == tag.Key {
+			tag.Value = value
+			return
+		}
+
+		m.tags = append(m.tags, nil)
+		copy(m.tags[i+1:], m.tags[i:])
+		m.tags[i] = &internal.Tag{Key: key, Value: value}
+		return
+	}
+
+	m.tags = append(m.tags, &internal.Tag{Key: key, Value: value})
+}
+
+func (m *metric) HasTag(key string) bool {
+	for _, tag := range m.tags {
+		if tag.Key == key {
+			return true
+		}
+	}
+	return false
+}
+
+func (m *metric) GetTag(key string) (string, bool) {
+	for _, tag := range m.tags {
+		if tag.Key == key {
+			return tag.Value, true
+		}
+	}
+	return "", false
+}
+
+func (m *metric) RemoveTag(key string) {
+	for i, tag := range m.tags {
+		if tag.Key == key {
+			copy(m.tags[i:], m.tags[i+1:])
+			m.tags[len(m.tags)-1] = nil
+			m.tags = m.tags[:len(m.tags)-1]
+			return
+		}
+	}
+}
+
 func (m *metric) AddField(key string, value interface{}) {
 	for i, field := range m.fields {
 		if key == field.Key {
