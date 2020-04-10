@@ -50,6 +50,15 @@ func (ac *accumulator) AddGauge(
 	ac.addFields(measurement, tags, fields, internal.Gauge, t...)
 }
 
+func (ac *accumulator) AddCounter(
+	measurement string,
+	fields map[string]interface{},
+	tags map[string]string,
+	t ...time.Time,
+) {
+	ac.addFields(measurement, tags, fields, internal.Counter, t...)
+}
+
 func (ac *accumulator) addFields(
 	measurement string,
 	tags map[string]string,

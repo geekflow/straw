@@ -17,6 +17,12 @@ type Accumulator interface {
 		tags map[string]string,
 		t ...time.Time)
 
+	// AddCounter is the same as AddFields, but will add the metric as a "Counter" type
+	AddCounter(measurement string,
+		fields map[string]interface{},
+		tags map[string]string,
+		t ...time.Time)
+
 	// SetPrecision sets the timestamp rounding precision.  All metrics addeds
 	// added to the accumulator will have their timestamp rounded to the
 	// nearest multiple of precision.

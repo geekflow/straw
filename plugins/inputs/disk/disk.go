@@ -67,7 +67,6 @@ func (s *DiskStats) Gather(acc plugins.Accumulator) error {
 			"inodes_free":  du.InodesFree,
 			"inodes_used":  du.InodesUsed,
 		}
-
 		acc.AddGauge("disk", fields, tags)
 	}
 
