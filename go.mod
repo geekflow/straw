@@ -3,6 +3,7 @@ module geeksaga.com/os/straw
 go 1.14
 
 require (
+	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/alecthomas/units v0.0.0-20190924025748-f65c72e2690d
 	github.com/google/go-cmp v0.4.0
 	github.com/influxdata/toml v0.0.0-20180607005434-2a2e3012f7cf
