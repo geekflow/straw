@@ -1,7 +1,6 @@
 package models
 
 import (
-	"fmt"
 	"geeksaga.com/os/straw/internal"
 	"geeksaga.com/os/straw/plugins"
 	log "github.com/sirupsen/logrus"
@@ -111,7 +110,6 @@ func (ro *RunningOutput) AddMetric(metric internal.Metric) {
 		return
 	}
 
-	fmt.Println(metric)
 	dropped := ro.buffer.Add(metric)
 	atomic.AddInt64(&ro.droppedMetrics, int64(dropped))
 
