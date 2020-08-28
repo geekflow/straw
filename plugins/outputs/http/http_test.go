@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/geekflow/straw/internal"
 	"github.com/geekflow/straw/metric"
-	"github.com/geekflow/straw/plugins/serializer/json"
+	"github.com/geekflow/straw/plugins/serializers/json"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
