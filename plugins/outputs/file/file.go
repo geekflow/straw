@@ -114,20 +114,18 @@ func (f *File) Write(metrics []internal.Metric) error {
 
 		_, err = f.writer.Write(octets)
 		if err != nil {
-			//f.Log.Errorf("Error writing to file: %v", err)
 			log.Errorf("Error writing to file: %v", err)
 		}
 	} else {
 		for _, metric := range metrics {
 			b, err := f.serializer.Serialize(metric)
 			if err != nil {
-				//f.Log.Debugf("Could not serialize metric: %v", err)
 				log.Debugf("Could not serialize metric: %v", err)
 			}
 
 			_, err = f.writer.Write(b)
 			if err != nil {
-				writeErr = fmt.Errorf("E! [outputs.file] failed to write message: %v", err)
+				writeErr = fmt.Errorf("[outputs.file] failed to write message: %v", err)
 			}
 		}
 	}

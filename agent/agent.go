@@ -291,7 +291,7 @@ func (a *Agent) runOutputs(
 		}
 	}
 
-	log.Println("I! [agent] Hang on, flushing any cached metrics before shutdown")
+	log.Println("[agent] Hang on, flushing any cached metrics before shutdown")
 	cancel()
 	wg.Wait()
 

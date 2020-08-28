@@ -84,10 +84,10 @@ func signalProcess() {
 		go func() {
 			select {
 			case sig := <-signals:
-				log.Printf("I! Signal(%d) is captured", sig)
+				log.Printf("Signal(%d) is captured", sig)
 
 				if sig == syscall.SIGHUP {
-					log.Printf("I! Reloading %s config", projectName)
+					log.Printf("Reloading %s config", projectName)
 					<-reload
 					reload <- true
 				}
@@ -99,13 +99,13 @@ func signalProcess() {
 
 		err := runAgent(ctx)
 		if err != nil && err != context.Canceled {
-			log.Fatalf("E! [%s] Error running agent: %v", projectName, err)
+			log.Fatalf("[%s] Error running agent: %v", projectName, err)
 		}
 	}
 }
 
 func runAgent(ctx context.Context) error {
-	log.Printf("I! Starting %s %s", projectName, version)
+	log.Printf("Starting %s %s", projectName, version)
 
 	c := config.NewConfig()
 	err := c.LoadConfig(*fConfig)
@@ -142,11 +142,9 @@ func runAgent(ctx context.Context) error {
 	// Setup logging as configured.
 	logConfig := logger.LogConfig{
 		//Level:               ag.Config.Agent.Quiet || *fQuiet,
-		//Target:              ag.Config.Agent.LogTarget,
-		//File:                ag.Config.Agent.Logfile,
-		//Level:               ag.Config.Agent.Debug,
-		Target:           ag.Config.Agent.LogTarget,
-		File:             ag.Config.Agent.Logfile,
+		Level:               log.DebugLevel,
+		Target:              ag.Config.Agent.LogTarget,
+		File:                ag.Config.Agent.Logfile,
 		RotationInterval:    ag.Config.Agent.LogfileRotationInterval,
 		RotationMaxSize:     ag.Config.Agent.LogfileRotationMaxSize,
 		RotationMaxArchives: ag.Config.Agent.LogfileRotationMaxArchives,
@@ -154,20 +152,18 @@ func runAgent(ctx context.Context) error {
 
 	logger.InitializeLogging(logConfig)
 
-	//logger.SetupLogging(logConfig)
-
-	log.Printf("I! Loaded inputs: %s", strings.Join(c.InputNames(), " "))
-	log.Printf("I! Loaded outputs: %s", strings.Join(c.OutputNames(), " "))
-	log.Printf("I! Tags enabled: %s", c.ListTags())
+	log.Printf("Loaded inputs: %s", strings.Join(c.InputNames(), " "))
+	log.Printf("Loaded outputs: %s", strings.Join(c.OutputNames(), " "))
+	log.Printf("Tags enabled: %s", c.ListTags())
 
 	if *fPidFile != "" {
 		f, err := os.OpenFile(*fPidFile, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			log.Printf("E! Unable to create pidfile: %s", err)
 		} else {
-			fmt.Fprintf(f, "%d\n", os.Getpid())
+			_, _ = fmt.Fprintf(f, "%d\n", os.Getpid())
 
-			f.Close()
+			_ = f.Close()
 
 			defer func() {
 				err := os.Remove(*fPidFile)
@@ -185,7 +181,6 @@ func main() {
 	flag.Usage = func() { usageExit(0) }
 	flag.Parse()
 
-	//logger.SetupLogging(logger.LogConfig{})
 	logger.InitializeLogging(logger.LogConfig{
 		Level: log.DebugLevel,
 		File:  strings.ToLower(projectName) + ".log",

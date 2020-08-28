@@ -25,6 +25,8 @@ func InitializeLogging(config LogConfig) {
 		}
 
 		log.SetOutput(file)
+	} else {
+		log.SetOutput(os.Stdout)
 	}
 
 	log.SetFormatter(&log.TextFormatter{
@@ -41,4 +43,5 @@ type Log struct {
 }
 
 func init() {
+	//log.SetFormatter(&log.JSONFormatter{})
 }

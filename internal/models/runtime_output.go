@@ -92,8 +92,7 @@ func NewRunningOutput(
 }
 
 func (r *RunningOutput) LogName() string {
-	//return logName("outputs", r.Config.Name, r.Config.Alias)
-	return "Log"
+	return logName("outputs", r.Config.Name, r.Config.Alias)
 }
 
 func (r *RunningOutput) Init() error {
@@ -101,73 +100,73 @@ func (r *RunningOutput) Init() error {
 }
 
 // AddMetric adds a metric to the output.
-func (ro *RunningOutput) AddMetric(metric internal.Metric) {
+func (r *RunningOutput) AddMetric(metric internal.Metric) {
 
-	if output, ok := ro.Output.(plugins.AggregatingOutput); ok {
-		ro.aggMutex.Lock()
+	if output, ok := r.Output.(plugins.AggregatingOutput); ok {
+		r.aggMutex.Lock()
 		output.Add(metric)
-		ro.aggMutex.Unlock()
+		r.aggMutex.Unlock()
 		return
 	}
 
-	dropped := ro.buffer.Add(metric)
-	atomic.AddInt64(&ro.droppedMetrics, int64(dropped))
+	dropped := r.buffer.Add(metric)
+	atomic.AddInt64(&r.droppedMetrics, int64(dropped))
 
-	count := atomic.AddInt64(&ro.newMetricsCount, 1)
-	if count == int64(ro.MetricBatchSize) {
-		atomic.StoreInt64(&ro.newMetricsCount, 0)
+	count := atomic.AddInt64(&r.newMetricsCount, 1)
+	if count == int64(r.MetricBatchSize) {
+		atomic.StoreInt64(&r.newMetricsCount, 0)
 		select {
-		case ro.BatchReady <- time.Now():
+		case r.BatchReady <- time.Now():
 		default:
 		}
 	}
 }
 
 // Write writes all metrics to the output, stopping when all have been sent on or error.
-func (ro *RunningOutput) Write() error {
-	if output, ok := ro.Output.(plugins.AggregatingOutput); ok {
-		ro.aggMutex.Lock()
+func (r *RunningOutput) Write() error {
+	if output, ok := r.Output.(plugins.AggregatingOutput); ok {
+		r.aggMutex.Lock()
 		metrics := output.Push()
-		ro.buffer.Add(metrics...)
+		r.buffer.Add(metrics...)
 		output.Reset()
-		ro.aggMutex.Unlock()
+		r.aggMutex.Unlock()
 	}
 
-	atomic.StoreInt64(&ro.newMetricsCount, 0)
+	atomic.StoreInt64(&r.newMetricsCount, 0)
 
 	// Only process the metrics in the buffer now.  Metrics added while we are writing will be sent on the next call.
-	nBuffer := ro.buffer.Len()
-	nBatches := nBuffer/ro.MetricBatchSize + 1
+	nBuffer := r.buffer.Len()
+	nBatches := nBuffer/r.MetricBatchSize + 1
 
 	for i := 0; i < nBatches; i++ {
-		batch := ro.buffer.Batch(ro.MetricBatchSize)
+		batch := r.buffer.Batch(r.MetricBatchSize)
 		if len(batch) == 0 {
 			break
 		}
 
-		err := ro.write(batch)
+		err := r.write(batch)
 		if err != nil {
-			ro.buffer.Reject(batch)
+			r.buffer.Reject(batch)
 			return err
 		}
-		ro.buffer.Accept(batch)
+		r.buffer.Accept(batch)
 	}
 	return nil
 }
 
 // WriteBatch writes a single batch of metrics to the output.
-func (ro *RunningOutput) WriteBatch() error {
-	batch := ro.buffer.Batch(ro.MetricBatchSize)
+func (r *RunningOutput) WriteBatch() error {
+	batch := r.buffer.Batch(r.MetricBatchSize)
 	if len(batch) == 0 {
 		return nil
 	}
 
-	err := ro.write(batch)
+	err := r.write(batch)
 	if err != nil {
-		ro.buffer.Reject(batch)
+		r.buffer.Reject(batch)
 		return err
 	}
-	ro.buffer.Accept(batch)
+	r.buffer.Accept(batch)
 
 	return nil
 }
@@ -175,7 +174,6 @@ func (ro *RunningOutput) WriteBatch() error {
 func (r *RunningOutput) Close() {
 	err := r.Output.Close()
 	if err != nil {
-		//r.log.Errorf("Error closing output: %v", err)
 		log.Errorf("Error closing output: %v", err)
 	}
 }
@@ -183,7 +181,6 @@ func (r *RunningOutput) Close() {
 func (r *RunningOutput) write(metrics []internal.Metric) error {
 	dropped := atomic.LoadInt64(&r.droppedMetrics)
 	if dropped > 0 {
-		//r.log.Warnf("Metric buffer overflow; %d metrics have been dropped", dropped)
 		log.Warnf("Metric buffer overflow; %d metrics have been dropped", dropped)
 		atomic.StoreInt64(&r.droppedMetrics, 0)
 	}
@@ -194,7 +191,6 @@ func (r *RunningOutput) write(metrics []internal.Metric) error {
 	//r.WriteTime.Incr(elapsed.Nanoseconds())
 
 	if err == nil {
-		//r.log.Debugf("Wrote batch of %d metrics in %s", len(metrics), elapsed)
 		log.Debugf("Wrote batch of %d metrics in %s", len(metrics), elapsed)
 	}
 	return err
@@ -202,7 +198,5 @@ func (r *RunningOutput) write(metrics []internal.Metric) error {
 
 func (r *RunningOutput) LogBufferStatus() {
 	nBuffer := r.buffer.Len()
-	//r.log.Debugf("Buffer fullness: %d / %d metrics", nBuffer, r.MetricBufferLimit)
 	log.Debugf("Buffer fullness: %d / %d metrics", nBuffer, r.MetricBufferLimit)
-	log.Infof("Buffer fullness: %d / %d metrics", nBuffer, r.MetricBufferLimit)
 }

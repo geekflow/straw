@@ -3,6 +3,7 @@ package serializers
 import (
 	"fmt"
 	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/plugins/serializers/influx"
 	"github.com/geekflow/straw/plugins/serializers/json"
 	"time"
 )
@@ -93,8 +94,8 @@ func NewSerializer(config *Config) (Serializer, error) {
 	var err error
 	var serializer Serializer
 	switch config.DataFormat {
-	//case "influx":
-	//	serializer, err = NewInfluxSerializerConfig(config)
+	case "influx":
+		serializer, err = NewInfluxSerializerConfig(config)
 	case "json":
 		serializer, err = NewJsonSerializer(config.TimestampUnits)
 	//case "nowmetric":
@@ -107,4 +108,22 @@ func NewSerializer(config *Config) (Serializer, error) {
 
 func NewJsonSerializer(timestampUnits time.Duration) (Serializer, error) {
 	return json.NewSerializer(timestampUnits)
+}
+
+func NewInfluxSerializerConfig(config *Config) (Serializer, error) {
+	var sort influx.FieldSortOrder
+	if config.InfluxSortFields {
+		sort = influx.SortFields
+	}
+
+	var typeSupport influx.FieldTypeSupport
+	if config.InfluxUintSupport {
+		typeSupport = typeSupport + influx.UintSupport
+	}
+
+	s := influx.NewSerializer()
+	s.SetMaxLineBytes(config.InfluxMaxLineBytes)
+	s.SetFieldSortOrder(sort)
+	s.SetFieldTypeSupport(typeSupport)
+	return s, nil
 }

@@ -42,8 +42,15 @@ type InputConfig struct {
 }
 
 func (r *RunningInput) LogName() string {
-	//return logName("inputs", r.Config.Name, r.Config.Alias)
-	return "Log"
+	return logName("inputs", r.Config.Name, r.Config.Alias)
+}
+
+// logName returns the log-friendly name/type.
+func logName(pluginType, name, alias string) string {
+	if alias == "" {
+		return pluginType + "." + name
+	}
+	return pluginType + "." + name + "::" + alias
 }
 
 func (r *RunningInput) Init() error {
