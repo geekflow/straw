@@ -2,10 +2,10 @@ package influxdb_test
 
 import (
 	"context"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/internal/tls"
-	"geeksaga.com/os/straw/metric"
-	"geeksaga.com/os/straw/plugins/outputs/influxdb"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/internal/tls"
+	"github.com/geekflow/straw/metric"
+	"github.com/geekflow/straw/plugins/outputs/influxdb"
 	"net/http"
 	"testing"
 	"time"

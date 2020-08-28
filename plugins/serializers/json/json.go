@@ -2,7 +2,7 @@ package json
 
 import (
 	"encoding/json"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"time"
 )
 

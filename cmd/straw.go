@@ -10,13 +10,13 @@ import (
 	"strings"
 	"syscall"
 
-	"geeksaga.com/os/straw/agent"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/internal/config"
-	"geeksaga.com/os/straw/internal/logger"
+	"github.com/geekflow/straw/agent"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/internal/config"
+	"github.com/geekflow/straw/internal/logger"
 
-	_ "geeksaga.com/os/straw/plugins/inputs/all"
-	_ "geeksaga.com/os/straw/plugins/outputs/all"
+	_ "github.com/geekflow/straw/plugins/inputs/all"
+	_ "github.com/geekflow/straw/plugins/outputs/all"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -152,8 +152,6 @@ func runAgent(ctx context.Context) error {
 	}
 
 	logger.InitializeLogging(logConfig)
-
-	//logger.SetupLogging(logConfig)
 
 	log.Printf("I! Loaded inputs: %s", strings.Join(c.InputNames(), " "))
 	log.Printf("I! Loaded outputs: %s", strings.Join(c.OutputNames(), " "))

@@ -2,8 +2,8 @@ package cpu
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/plugins/inputs/system"
-	"geeksaga.com/os/straw/testutil"
+	"github.com/geekflow/straw/plugins/inputs/system"
+	"github.com/geekflow/straw/testutil"
 	"testing"
 
 	"github.com/shirou/gopsutil/cpu"

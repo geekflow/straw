@@ -2,6 +2,7 @@ package influxdb_v2_test
 
 import (
 	"context"
+	"github.com/geekflow/straw/internal"
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
@@ -9,8 +10,8 @@ import (
 	"testing"
 	"time"
 
-	influxdb "github.com/influxdata/telegraf/plugins/outputs/influxdb_v2"
-	"github.com/influxdata/telegraf/testutil"
+	influxdb "github.com/geekflow/straw/plugins/outputs/influxdb_v2"
+	"github.com/geekflow/straw/testutil"
 	"github.com/stretchr/testify/require"
 )
 
@@ -91,7 +92,7 @@ func TestWriteBucketTagWorksOnRetry(t *testing.T) {
 	client, err := influxdb.NewHTTPClient(config)
 	require.NoError(t, err)
 
-	metrics := []telegraf.Metric{
+	metrics := []internal.Metric{
 		testutil.MustMetric(
 			"cpu",
 			map[string]string{

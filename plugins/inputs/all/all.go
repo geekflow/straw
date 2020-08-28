@@ -1,8 +1,8 @@
 package all
 
 import (
-	_ "geeksaga.com/os/straw/plugins/inputs/cpu"
-	_ "geeksaga.com/os/straw/plugins/inputs/disk"
-	_ "geeksaga.com/os/straw/plugins/inputs/process"
-	_ "geeksaga.com/os/straw/plugins/inputs/procstat"
+	_ "github.com/geekflow/straw/plugins/inputs/cpu"
+	_ "github.com/geekflow/straw/plugins/inputs/disk"
+	_ "github.com/geekflow/straw/plugins/inputs/process"
+	_ "github.com/geekflow/straw/plugins/inputs/procstat"
 )

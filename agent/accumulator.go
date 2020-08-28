@@ -1,9 +1,9 @@
 package agent
 
 import (
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/metric"
-	"geeksaga.com/os/straw/plugins"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
+	"github.com/geekflow/straw/plugins"
 	"time"
 
 	log "github.com/sirupsen/logrus"

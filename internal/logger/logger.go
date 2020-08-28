@@ -2,7 +2,7 @@ package logger
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"

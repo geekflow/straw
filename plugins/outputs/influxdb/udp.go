@@ -5,8 +5,8 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/plugins/serializers/influx"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/plugins/serializers/influx"
 	"net"
 	"net/url"
 

@@ -1,10 +1,10 @@
 package influxdb_v2_test
 
 import (
-	"geeksaga.com/os/straw/internal/tls"
-	"geeksaga.com/os/straw/plugins/outputs"
+	"github.com/geekflow/straw/internal/tls"
+	"github.com/geekflow/straw/plugins/outputs"
 
-	influxdb "geeksaga.com/os/straw/plugins/outputs/influxdb_v2"
+	influxdb "github.com/geekflow/straw/plugins/outputs/influxdb_v2"
 	"testing"
 
 	"github.com/stretchr/testify/require"

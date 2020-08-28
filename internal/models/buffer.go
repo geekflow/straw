@@ -1,7 +1,7 @@
 package models
 
 import (
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"sync"
 )
 

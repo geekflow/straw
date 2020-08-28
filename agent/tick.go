@@ -2,7 +2,7 @@ package agent
 
 import (
 	"context"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"sync"
 	"time"
 )

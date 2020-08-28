@@ -1,8 +1,8 @@
 package testutil
 
 import (
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/metric"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
 	"net"
 	"net/url"
 	"os"

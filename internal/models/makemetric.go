@@ -1,7 +1,7 @@
 package models
 
 import (
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 )
 
 // Makemetric applies new metric plugin and agent measurement and tag

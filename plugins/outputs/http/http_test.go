@@ -2,9 +2,9 @@ package http
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/metric"
-	"geeksaga.com/os/straw/plugins/serializer/json"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
+	"github.com/geekflow/straw/plugins/serializer/json"
 	"net/http"
 	"net/http/httptest"
 	"net/url"

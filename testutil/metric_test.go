@@ -1,23 +1,23 @@
 package testutil
 
 import (
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
 	"testing"
 	"time"
 
 	"github.com/google/go-cmp/cmp"
-	"github.com/influxdata/telegraf"
-	"github.com/influxdata/telegraf/metric"
 )
 
 func TestRequireMetricEqual(t *testing.T) {
 	tests := []struct {
 		name string
-		got  telegraf.Metric
-		want telegraf.Metric
+		got  internal.Metric
+		want internal.Metric
 	}{
 		{
 			name: "equal metrics should be equal",
-			got: func() telegraf.Metric {
+			got: func() internal.Metric {
 				m, _ := metric.New(
 					"test",
 					map[string]string{
@@ -33,7 +33,7 @@ func TestRequireMetricEqual(t *testing.T) {
 				)
 				return m
 			}(),
-			want: func() telegraf.Metric {
+			want: func() internal.Metric {
 				m, _ := metric.New(
 					"test",
 					map[string]string{
@@ -61,13 +61,13 @@ func TestRequireMetricEqual(t *testing.T) {
 func TestRequireMetricsEqual(t *testing.T) {
 	tests := []struct {
 		name string
-		got  []telegraf.Metric
-		want []telegraf.Metric
+		got  []internal.Metric
+		want []internal.Metric
 		opts []cmp.Option
 	}{
 		{
 			name: "sort metrics option sorts by name",
-			got: []telegraf.Metric{
+			got: []internal.Metric{
 				MustMetric(
 					"cpu",
 					map[string]string{},
@@ -81,7 +81,7 @@ func TestRequireMetricsEqual(t *testing.T) {
 					time.Unix(0, 0),
 				),
 			},
-			want: []telegraf.Metric{
+			want: []internal.Metric{
 				MustMetric(
 					"net",
 					map[string]string{},

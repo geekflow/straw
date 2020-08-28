@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"geeksaga.com/os/straw/plugins"
+	"github.com/geekflow/straw/plugins"
 
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"

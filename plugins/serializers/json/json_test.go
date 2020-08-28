@@ -2,8 +2,8 @@ package json
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/internal/metric"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
 	"testing"
 	"time"
 

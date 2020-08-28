@@ -2,9 +2,9 @@ package cpu
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/plugins"
-	"geeksaga.com/os/straw/plugins/inputs"
-	"geeksaga.com/os/straw/plugins/inputs/system"
+	"github.com/geekflow/straw/plugins"
+	"github.com/geekflow/straw/plugins/inputs"
+	"github.com/geekflow/straw/plugins/inputs/system"
 	"time"
 
 	"github.com/shirou/gopsutil/cpu"

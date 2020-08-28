@@ -1,8 +1,8 @@
 package influx
 
 import (
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/metric"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/metric"
 	"math"
 	"testing"
 	"time"

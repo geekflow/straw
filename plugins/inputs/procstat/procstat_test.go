@@ -2,7 +2,7 @@ package procstat
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/testutil"
+	"github.com/geekflow/straw/testutil"
 	"io/ioutil"
 	"os"
 	"os/exec"

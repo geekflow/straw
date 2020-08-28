@@ -2,7 +2,7 @@ package metric
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"sort"
 	"time"
 )

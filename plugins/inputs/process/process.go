@@ -2,8 +2,8 @@ package process
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/plugins"
-	"geeksaga.com/os/straw/plugins/inputs"
+	"github.com/geekflow/straw/plugins"
+	"github.com/geekflow/straw/plugins/inputs"
 	"github.com/shirou/gopsutil/process"
 	"time"
 )

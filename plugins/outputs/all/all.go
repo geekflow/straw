@@ -1,8 +1,8 @@
 package all
 
 import (
-	_ "geeksaga.com/os/straw/plugins/outputs/file"
-	_ "geeksaga.com/os/straw/plugins/outputs/http"
-	_ "geeksaga.com/os/straw/plugins/outputs/influxdb"
-	_ "geeksaga.com/os/straw/plugins/outputs/influxdb_v2"
+	_ "github.com/geekflow/straw/plugins/outputs/file"
+	_ "github.com/geekflow/straw/plugins/outputs/http"
+	_ "github.com/geekflow/straw/plugins/outputs/influxdb"
+	_ "github.com/geekflow/straw/plugins/outputs/influxdb_v2"
 )

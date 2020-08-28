@@ -1,7 +1,7 @@
 package plugins
 
 import (
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 )
 
 type Output interface {

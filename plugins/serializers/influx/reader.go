@@ -2,7 +2,7 @@ package influx
 
 import (
 	"bytes"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"io"
 	"log"
 )

@@ -1,7 +1,7 @@
 package outputs
 
 import (
-	"geeksaga.com/os/straw/plugins"
+	"github.com/geekflow/straw/plugins"
 )
 
 type Creator func() plugins.Output

@@ -2,7 +2,7 @@ package procstat
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"io/ioutil"
 	"os/exec"
 	"strconv"

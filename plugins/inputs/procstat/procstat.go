@@ -3,8 +3,8 @@ package procstat
 import (
 	"bytes"
 	"fmt"
-	"geeksaga.com/os/straw/plugins"
-	"geeksaga.com/os/straw/plugins/inputs"
+	"github.com/geekflow/straw/plugins"
+	"github.com/geekflow/straw/plugins/inputs"
 	"io/ioutil"
 	"os/exec"
 	"path/filepath"

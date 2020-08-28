@@ -2,8 +2,8 @@ package serializers
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/plugins/serializers/json"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/plugins/serializers/json"
 	"time"
 )
 

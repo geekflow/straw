@@ -2,11 +2,11 @@ package file
 
 import (
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/internal/rotate"
-	"geeksaga.com/os/straw/plugins"
-	"geeksaga.com/os/straw/plugins/outputs"
-	serializers "geeksaga.com/os/straw/plugins/serializers"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/internal/rotate"
+	"github.com/geekflow/straw/plugins"
+	"github.com/geekflow/straw/plugins/outputs"
+	serializers "github.com/geekflow/straw/plugins/serializers"
 	"io"
 	"os"
 

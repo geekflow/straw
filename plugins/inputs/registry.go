@@ -1,6 +1,6 @@
 package inputs
 
-import "geeksaga.com/os/straw/plugins"
+import "github.com/geekflow/straw/plugins"
 
 type Creator func() plugins.Input
 

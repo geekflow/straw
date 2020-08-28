@@ -3,8 +3,8 @@ package testutil
 import (
 	"encoding/json"
 	"fmt"
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/plugins"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/plugins"
 	"reflect"
 	"sync"
 	"sync/atomic"

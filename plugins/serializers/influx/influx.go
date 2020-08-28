@@ -3,7 +3,7 @@ package influx
 import (
 	"bytes"
 	"fmt"
-	"geeksaga.com/os/straw/internal"
+	"github.com/geekflow/straw/internal"
 	"io"
 	"log"
 	"math"

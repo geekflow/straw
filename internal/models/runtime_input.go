@@ -1,8 +1,8 @@
 package models
 
 import (
-	"geeksaga.com/os/straw/internal"
-	"geeksaga.com/os/straw/plugins"
+	"github.com/geekflow/straw/internal"
+	"github.com/geekflow/straw/plugins"
 
 	log "github.com/sirupsen/logrus"
 	"time"

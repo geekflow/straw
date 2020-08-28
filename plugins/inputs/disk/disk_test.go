@@ -1,7 +1,7 @@
 package disk
 
 import (
-	"geeksaga.com/os/straw/plugins/inputs/system"
+	"github.com/geekflow/straw/plugins/inputs/system"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/stretchr/testify/require"
 	"os"
