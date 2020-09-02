@@ -14,15 +14,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var (
-	lastID uint64
-)
-
-func newTrackingID() plugins.TrackingID {
-	id := atomic.AddUint64(&lastID, 1)
-	return plugins.TrackingID(id)
-}
-
 // Metric defines a single point measurement
 type Metric struct {
 	Measurement string
@@ -41,12 +32,11 @@ type Accumulator struct {
 	sync.Mutex
 	*sync.Cond
 
-	Metrics   []*Metric
-	nMetrics  uint64
-	Discard   bool
-	Errors    []error
-	debug     bool
-	delivered chan plugins.DeliveryInfo
+	Metrics  []*Metric
+	nMetrics uint64
+	Discard  bool
+	Errors   []error
+	debug    bool
 
 	TimeFunc func() time.Time
 }
@@ -194,29 +184,6 @@ func (a *Accumulator) AddHistogram(
 
 func (a *Accumulator) AddMetric(m internal.Metric) {
 	a.addFields(m.Name(), m.Tags(), m.Fields(), m.Type(), m.Time())
-}
-
-func (a *Accumulator) WithTracking(maxTracked int) plugins.TrackingAccumulator {
-	return a
-}
-
-func (a *Accumulator) AddTrackingMetric(m internal.Metric) plugins.TrackingID {
-	a.AddMetric(m)
-	return newTrackingID()
-}
-
-func (a *Accumulator) AddTrackingMetricGroup(group []internal.Metric) plugins.TrackingID {
-	for _, m := range group {
-		a.AddMetric(m)
-	}
-	return newTrackingID()
-}
-
-func (a *Accumulator) Delivered() <-chan plugins.DeliveryInfo {
-	if a.delivered == nil {
-		a.delivered = make(chan plugins.DeliveryInfo)
-	}
-	return a.delivered
 }
 
 // AddError appends the given error to Accumulator.Errors.
@@ -731,7 +698,6 @@ func (n *NopAccumulator) AddSummary(measurement string, fields map[string]interf
 }
 func (n *NopAccumulator) AddHistogram(measurement string, fields map[string]interface{}, tags map[string]string, t ...time.Time) {
 }
-func (n *NopAccumulator) AddMetric(internal.Metric)                               {}
-func (n *NopAccumulator) SetPrecision(precision time.Duration)                    {}
-func (n *NopAccumulator) AddError(err error)                                      {}
-func (n *NopAccumulator) WithTracking(maxTracked int) plugins.TrackingAccumulator { return nil }
+func (n *NopAccumulator) AddMetric(internal.Metric)            {}
+func (n *NopAccumulator) SetPrecision(precision time.Duration) {}
+func (n *NopAccumulator) AddError(err error)                   {}

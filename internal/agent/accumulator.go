@@ -81,7 +81,6 @@ func (ac *accumulator) AddError(err error) {
 	if err == nil {
 		return
 	}
-	//ac.maker.Log().Errorf("Error in plugin: %v", err)
 	log.Errorf("Error in plugin: %v", err)
 }
 

@@ -157,7 +157,7 @@ func RequireMetricEqual(t *testing.T, expected, actual internal.Metric, opts ...
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhs, opts...); diff != "" {
-		t.Fatalf("telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("internal.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 
@@ -177,7 +177,7 @@ func RequireMetricsEqual(t *testing.T, expected, actual []internal.Metric, opts 
 
 	opts = append(opts, cmpopts.EquateNaNs())
 	if diff := cmp.Diff(lhs, rhs, opts...); diff != "" {
-		t.Fatalf("[]telegraf.Metric\n--- expected\n+++ actual\n%s", diff)
+		t.Fatalf("[]internal.Metric\n--- expected\n+++ actual\n%s", diff)
 	}
 }
 

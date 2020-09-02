@@ -19,8 +19,6 @@ type MockClient struct {
 	CreateDatabaseF func(ctx context.Context, database string) error
 	DatabaseF       func() string
 	CloseF          func()
-
-	//log telegraf.Logger
 }
 
 func (c *MockClient) URL() string {
@@ -43,10 +41,6 @@ func (c *MockClient) Close() {
 	c.CloseF()
 }
 
-//func (c *MockClient) SetLogger(log internal.Logger) {
-//c.log = log
-//}
-
 func TestDeprecatedURLSupport(t *testing.T) {
 	var actual *influxdb.UDPConfig
 	output := influxdb.InfluxDB{
@@ -57,8 +51,6 @@ func TestDeprecatedURLSupport(t *testing.T) {
 			return &MockClient{}, nil
 		},
 	}
-
-	//output.Log = testutil.Logger{}
 
 	err := output.Connect()
 	require.NoError(t, err)
@@ -81,8 +73,6 @@ func TestDefaultURL(t *testing.T) {
 		},
 	}
 
-	//output.Log = testutil.Logger{}
-
 	err := output.Connect()
 	require.NoError(t, err)
 	require.Equal(t, "http://localhost:8086", actual.URL.String())
@@ -100,7 +90,6 @@ func TestConnectUDPConfig(t *testing.T) {
 			return &MockClient{}, nil
 		},
 	}
-	//output.Log = testutil.Logger{}
 
 	err := output.Connect()
 	require.NoError(t, err)
@@ -144,8 +133,6 @@ func TestConnectHTTPConfig(t *testing.T) {
 		},
 	}
 
-	//output.Log = testutil.Logger{}
-
 	err := output.Connect()
 	require.NoError(t, err)
 
@@ -172,7 +159,7 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 		CreateHTTPClientF: func(config *influxdb.HTTPConfig) (influxdb.Client, error) {
 			return &MockClient{
 				DatabaseF: func() string {
-					return "telegraf"
+					return "straw"
 				},
 				CreateDatabaseF: func(ctx context.Context, database string) error {
 					return nil
@@ -182,7 +169,7 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 						APIError: influxdb.APIError{
 							StatusCode:  http.StatusNotFound,
 							Title:       "404 Not Found",
-							Description: `database not found "telegraf"`,
+							Description: `database not found "straw"`,
 						},
 					}
 				},
@@ -192,8 +179,6 @@ func TestWriteRecreateDatabaseIfDatabaseNotFound(t *testing.T) {
 			}, nil
 		},
 	}
-
-	//output.Log = testutil.Logger{}
 
 	err := output.Connect()
 	require.NoError(t, err)

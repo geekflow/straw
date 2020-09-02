@@ -6,6 +6,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"io"
 	"os"
+	"time"
 )
 
 type LogConfig struct {
@@ -30,15 +31,16 @@ func InitializeLogging(config LogConfig) {
 	}
 
 	log.SetFormatter(&log.TextFormatter{
-		DisableColors: false,
-		FullTimestamp: true,
+		DisableColors:   false,
+		FullTimestamp:   true,
+		TimestampFormat: time.RFC3339,
 	})
 
 	log.SetLevel(config.Level)
 }
 
-type Log struct {
-	log            log.Logger
+type Logger struct {
+	Logger         log.Logger
 	internalWriter io.Writer
 }
 

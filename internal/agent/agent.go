@@ -29,7 +29,7 @@ func NewAgent(config *config.Config) (*Agent, error) {
 
 // Run starts and runs the Agent until the context is done.
 func (a *Agent) Run(ctx context.Context) error {
-	log.Printf("I! [agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
+	log.Printf("[agent] Config: Interval:%s, Quiet:%#v, Hostname:%#v, "+
 		"Flush Interval:%s",
 		a.Config.Agent.Interval.Duration, a.Config.Agent.Quiet,
 		a.Config.Agent.Hostname, a.Config.Agent.FlushInterval.Duration)
@@ -38,14 +38,14 @@ func (a *Agent) Run(ctx context.Context) error {
 		return ctx.Err()
 	}
 
-	log.Printf("D! [agent] Initializing plugins")
+	log.Printf("[agent] Initializing plugins")
 	err := a.initPlugins()
 	if err != nil {
 		return err
 	}
 
-	log.Printf("D! [agent] Connecting outputs")
-	err = a.connectOutputs(ctx)
+	log.Printf("[agent] Connecting outputs")
+	err = a.connectOutput(ctx)
 	if err != nil {
 		return err
 	}
@@ -53,12 +53,6 @@ func (a *Agent) Run(ctx context.Context) error {
 	inputC := make(chan internal.Metric, 100)
 
 	startTime := time.Now()
-
-	log.Printf("D! [agent] Starting service inputs")
-	err = a.startServiceInputs(ctx, inputC)
-	if err != nil {
-		return err
-	}
 
 	var wg sync.WaitGroup
 
@@ -71,14 +65,11 @@ func (a *Agent) Run(ctx context.Context) error {
 
 		err := a.runInputs(ctx, startTime, dst)
 		if err != nil {
-			log.Printf("E! [agent] Error running inputs: %v", err)
+			log.Printf("[agent] Error running inputs: %v", err)
 		}
 
-		log.Printf("D! [agent] Stopping service inputs")
-		a.stopServiceInputs()
-
 		close(dst)
-		log.Printf("D! [agent] Input channel closed")
+		log.Printf("[agent] Input channel closed")
 	}(dst)
 
 	src = dst
@@ -89,16 +80,16 @@ func (a *Agent) Run(ctx context.Context) error {
 
 		err := a.runOutputs(startTime, src)
 		if err != nil {
-			log.Printf("E! [agent] Error running outputs: %v", err)
+			log.Printf("[agent] Error running outputs: %v", err)
 		}
 	}(src)
 
 	wg.Wait()
 
-	log.Printf("D! [agent] Closing outputs")
+	log.Printf("[agent] Closing outputs")
 	a.closeOutputs()
 
-	log.Printf("D! [agent] Stopped Successfully")
+	log.Printf("[agent] Stopped Successfully")
 	return nil
 }
 
@@ -195,48 +186,9 @@ func (a *Agent) gatherOnce(
 		case err := <-done:
 			return err
 		case <-ticker.C:
-			log.Printf("W! [agent] [%s] did not complete within its interval", input.LogName())
+			log.Printf("[agent] [%s] did not complete within its interval", input.LogName())
 		}
 	}
-}
-
-// runProcessors applies processors to metrics.
-func (a *Agent) runProcessors(
-	src <-chan internal.Metric,
-	agg chan<- internal.Metric,
-) error {
-	for metric := range src {
-		metrics := a.applyProcessors(metric)
-
-		for _, metric := range metrics {
-			agg <- metric
-		}
-	}
-
-	return nil
-}
-
-// applyProcessors applies all processors to a metric.
-func (a *Agent) applyProcessors(m internal.Metric) []internal.Metric {
-	metrics := []internal.Metric{m}
-
-	return metrics
-}
-
-func updateWindow(start time.Time, roundInterval bool, period time.Duration) (time.Time, time.Time) {
-	var until time.Time
-	if roundInterval {
-		//until = internal.AlignTime(start, period)
-		//if until == start {
-		//	until = internal.AlignTime(start.Add(time.Nanosecond), period)
-		//}
-	} else {
-		until = start.Add(period)
-	}
-
-	since := until.Add(-period)
-
-	return since, until
 }
 
 // runOutputs triggers the periodic write for Outputs.
@@ -311,7 +263,7 @@ func (a *Agent) flush(
 
 	logError := func(err error) {
 		if err != nil {
-			log.Printf("E! [agent] Error writing to %s: %v", output.LogName(), err)
+			log.Printf("[agent] Error writing to %s: %v", output.LogName(), err)
 		}
 	}
 
@@ -388,13 +340,12 @@ func (a *Agent) initPlugins() error {
 	return nil
 }
 
-// connectOutputs connects to all outputs.
-func (a *Agent) connectOutputs(ctx context.Context) error {
+func (a *Agent) connectOutput(ctx context.Context) error {
 	for _, output := range a.Config.Outputs {
-		log.Printf("D! [agent] Attempting connection to [%s]", output.LogName())
+		log.Printf("[agent] Attempting connection to [%s]", output.LogName())
 		err := output.Output.Connect()
 		if err != nil {
-			log.Printf("E! [agent] Failed to connect to [%s], retrying in 15s, "+
+			log.Printf("[agent] Failed to connect to [%s], retrying in 15s, "+
 				"error was '%s'", output.LogName(), err)
 
 			err := internal.SleepContext(ctx, 15*time.Second)
@@ -407,7 +358,7 @@ func (a *Agent) connectOutputs(ctx context.Context) error {
 				return err
 			}
 		}
-		log.Printf("D! [agent] Successfully connected to %s", output.LogName())
+		log.Printf("[agent] Successfully connected to %s", output.LogName())
 	}
 	return nil
 }
@@ -417,18 +368,6 @@ func (a *Agent) closeOutputs() {
 	for _, output := range a.Config.Outputs {
 		output.Close()
 	}
-}
-
-// startServiceInputs starts all service inputs.
-func (a *Agent) startServiceInputs(
-	ctx context.Context,
-	dst chan<- internal.Metric,
-) error {
-	return nil
-}
-
-// stopServiceInputs stops all service inputs.
-func (a *Agent) stopServiceInputs() {
 }
 
 // Returns the rounding precision for metrics.
@@ -457,9 +396,8 @@ func panicRecover(input *models.RunningInput) {
 	if err := recover(); err != nil {
 		trace := make([]byte, 2048)
 		runtime.Stack(trace, true)
-		//log.Printf("E! FATAL: [%s] panicked: %s, Stack:\n%s",
-		//	input.LogName(), err, trace)
-		log.Println("E! PLEASE REPORT THIS PANIC ON GITHUB with " +
+		log.Printf("FATAL: [%s] panicked: %s, Stack:\n%s", input.LogName(), err, trace)
+		log.Println("PLEASE REPORT THIS PANIC ON GITHUB with " +
 			"stack trace, configuration, and OS information: " +
 			"https://github.com/geekflow/straw/issues/new/choose")
 	}

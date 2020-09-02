@@ -31,8 +31,8 @@ func GetLocalHost() string {
 	return localhost
 }
 
-// MockMetrics returns a mock []telegraf.Metric object for using in unit tests
-// of telegraf output sinks.
+// MockMetrics returns a mock []internal.Metric object for using in unit tests
+// of straw output sinks.
 func MockMetrics() []internal.Metric {
 	metrics := make([]internal.Metric, 0)
 	// Create a new point batch

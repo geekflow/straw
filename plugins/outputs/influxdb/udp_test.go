@@ -182,7 +182,6 @@ func TestUDP_ErrorLogging(t *testing.T) {
 						return conn, nil
 					},
 				},
-				//Log: testutil.Logger{},
 			},
 			metrics:     []internal.Metric{getMetric()},
 			logContains: `could not serialize metric: "cpu": need more space`,
@@ -197,7 +196,6 @@ func TestUDP_ErrorLogging(t *testing.T) {
 						return conn, nil
 					},
 				},
-				//Log: testutil.Logger{},
 			},
 			metrics: []internal.Metric{
 				func() internal.Metric {
